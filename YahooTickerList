@@ -1,1 +1,28 @@
+```python
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
 
+def get_tickers_from_yahoo(exchange):
+    tickers = []
+    base_url = f"https://finance.yahoo.com/lookup?s=&t=S&m=ALL&r={exchange}&b="
+    
+    for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        url = base_url + letter
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        for row in soup.find_all('tr', class_='simpTblRow'):
+            ticker = row.find('td', class_='data-col0').text.strip()
+            tickers.append(ticker)
+    
+    return tickers
+
+# Example usage
+exchange = "us"  # Change this to the desired exchange
+tickers = get_tickers_from_yahoo(exchange)
+df = pd.DataFrame(tickers, columns=["Ticker"])
+df.to_csv("tickers.csv", index=False)
+print(f"Saved {len(tickers)} tickers to tickers.csv")
+
+```
