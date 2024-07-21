@@ -1,4 +1,4 @@
-```python
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -25,4 +25,3 @@ df = pd.DataFrame(tickers, columns=["Ticker"])
 df.to_csv("tickers.csv", index=False)
 print(f"Saved {len(tickers)} tickers to tickers.csv")
 
-```
